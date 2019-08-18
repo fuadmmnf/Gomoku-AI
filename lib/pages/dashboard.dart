@@ -53,7 +53,14 @@ class DashboardPage extends StatelessWidget {
                 Align(
                     alignment: Alignment.bottomCenter,
                     child: Column(children: <Widget>[
-                      SimpleRoundButton(),
+                      SimpleRoundButton(
+                        textColor: Colors.white,
+                        backgroundColor: Colors.orangeAccent,
+                        buttonText: "Play",
+                        onPressed: (){
+                          Navigator.of(context).pushNamed('/gamepage');
+                        },
+                      ),
                       SizedBox(
                         height: 10.0,
                       ),
