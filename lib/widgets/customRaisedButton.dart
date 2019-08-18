@@ -25,7 +25,7 @@ class SimpleRoundButton extends StatelessWidget {
                   style: TextStyle(
                     letterSpacing: 5.0,
                     fontSize: 18.0,
-                    color: Colors.white
+                    color: Colors.white,
                   ),
                 ),
               ),
