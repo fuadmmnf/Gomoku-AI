@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 
+import 'package:gomoku_ai/utils/singleton.dart';
+
 class BoardButton extends StatefulWidget {
   String label;
   final id;
+
+  final Singleton _singleton = Singleton();
 
   BoardButton({this.id, this.label});
 
@@ -13,7 +17,7 @@ class BoardButton extends StatefulWidget {
 class _BoardButtonState extends State<BoardButton> {
 
   bool isSelected = false;
-
+  int selectedPlayer = 0;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,11 +33,16 @@ class _BoardButtonState extends State<BoardButton> {
           shape: new RoundedRectangleBorder(
               borderRadius: new BorderRadius.circular(30.0)),
           splashColor: Colors.white10,
-          color: isSelected? Colors.black : Colors.white70,
+          color: isSelected? ((selectedPlayer == 1) ? Colors.black: Colors.white) : Colors.red[200],
           child: null,
           onPressed: () {
             setState(() {
-              isSelected = !isSelected;
+              if(!isSelected){
+                isSelected = !isSelected;
+                selectedPlayer = widget._singleton.getCurrentPlayer();
+                widget._singleton.changeCurrentPlayer(); 
+              }
+
             });
           },
         ),

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:gomoku_ai/widgets/switcher/barItem.dart';
+import 'package:gomoku_ai/utils/singleton.dart';
 
 class AnimatedBar extends StatefulWidget {
 
   final List<BarItem> barItems;
   AnimatedBar({this.barItems});
+  final Singleton _singleton = Singleton();
 
   @override
   _AnimatedBarState createState() => _AnimatedBarState();
@@ -13,7 +15,7 @@ class AnimatedBar extends StatefulWidget {
 
 class _AnimatedBarState extends State<AnimatedBar> with TickerProviderStateMixin{
 
-  int selectedPlayer = 0;
+  int selectedPlayer = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -36,13 +38,15 @@ class _AnimatedBarState extends State<AnimatedBar> with TickerProviderStateMixin
 
     for (int i=0; i<widget.barItems.length; i++) {
       BarItem item = widget.barItems[i];
-      bool isSelected = selectedPlayer==i;
+      bool isSelected = selectedPlayer == widget._singleton.getCurrentPlayer();
+      //      print(widget._singleton.getCurrentPlayer());
+
       _barItems.add(InkWell(
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
         onTap: (){
           setState(() {
-            selectedPlayer = i;
+            selectedPlayer = widget._singleton.getCurrentPlayer();
           });
         },
         child: AnimatedContainer(
