@@ -40,7 +40,7 @@ class _BoardButtonState extends State<BoardButton> {
               if(!isSelected){
                 isSelected = !isSelected;
                 selectedPlayer = widget._singleton.getCurrentPlayer();
-                widget._singleton.changeCurrentPlayer(); 
+                widget._singleton.changeCurrentPlayer();
               }
 
             });
