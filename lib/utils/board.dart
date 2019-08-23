@@ -17,6 +17,9 @@ class BoardClass{
   void changeEntry(int a, int b, int c){
     board[a][b]=c;
   }
+  int getPlayer(int i, int j){
+    return board[i][j];
+  }
 
   void boardPrint(){
     print(board);
@@ -117,10 +120,10 @@ class BoardClass{
      return true;
     else if(searchColumn(n,currentPlayer))
       return true;
-    else if(searchRightDiagonal(n,currentPlayer))
-      return true;
-    else if(searchLeftDiagonal(n,currentPlayer))
-      return true;
+//    else if(searchRightDiagonal(n,currentPlayer))
+//      return true;
+//    else if(searchLeftDiagonal(n,currentPlayer))
+//      return true;
 
     return false;
 
