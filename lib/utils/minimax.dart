@@ -102,14 +102,14 @@ class Minimax{
     value += 2000 * board.searchForLooseEnds(4, 2, AI);
     value += 1800 * board.searchForLooseEnds(3, 2, AI);
     value += 100 * board.searchForLooseEnds(2, 2, AI);
-    value += 1850 * board.searchForLooseEnds(4, 1, AI);
+    value += 1900 * board.searchForLooseEnds(4, 1, AI);
     value += 150 * board.searchForLooseEnds(3, 1, AI);
     value += 10 * board.searchForLooseEnds(2, 1, AI);
 
     value -= 2000 * board.searchForLooseEnds(4, 2, HUMAN);
     value -= 1800 * board.searchForLooseEnds(3, 2, HUMAN);
     value -= 100 * board.searchForLooseEnds(2, 2, HUMAN);
-    value -= 1850 * board.searchForLooseEnds(4, 1, HUMAN);
+    value -= 1900 * board.searchForLooseEnds(4, 1, HUMAN);
     value -= 150 * board.searchForLooseEnds(3, 1, HUMAN);
     value -= 10 * board.searchForLooseEnds(2, 1, HUMAN);
 

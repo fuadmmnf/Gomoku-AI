@@ -3,6 +3,7 @@ import 'dart:core';
 class BoardClass {
   List<List<num>> board = new List.generate(10, (i) => new List(10));
   bool isGameOver;
+
   BoardClass() {
     isGameOver = false;
     for (int i = 0; i < 10; i++) {
@@ -27,8 +28,7 @@ class BoardClass {
   BoardClass copyBoard() {
     BoardClass tempBoard = BoardClass();
     for (int i = 0; i < 10; i++)
-      for (int j = 0; j < 10; j++)
-        tempBoard.changeEntry(i, j, getPlayer(i, j));
+      for (int j = 0; j < 10; j++) tempBoard.changeEntry(i, j, getPlayer(i, j));
 
     return tempBoard;
   }
@@ -126,16 +126,14 @@ class BoardClass {
 
   int searchForLooseEnds(int n, int looseEndCount, int currentPlayer) {
     return (searchRowForLooseEnd(n, looseEndCount, currentPlayer) +
-        searchColumnForLooseEnd(n, looseEndCount, currentPlayer)) ;
-//        searchLeftDiagonalForLooseEnd(n, looseEndCount, currentPlayer) +
-//        searchRightDiagonalForLooseEnd(n, looseEndCount, currentPlayer));
-
+        searchColumnForLooseEnd(n, looseEndCount, currentPlayer) +
+        searchLeftDiagonalForLooseEnd(n, looseEndCount, currentPlayer) +
+        searchRightDiagonalForLooseEnd(n, looseEndCount, currentPlayer));
   }
 
   bool isBoardFinished() {
     for (int i = 0; i < 10; i++)
-      for (int j = 0; j < 10; j++)
-        if (board[i][j] == -1) return false;
+      for (int j = 0; j < 10; j++) if (board[i][j] == -1) return false;
 
     return true;
   }
@@ -149,7 +147,7 @@ class BoardClass {
           bool matchfound = true;
           if (board[i][col] == -1 && board[i + n + 1][col] == -1) {
             for (int k = i + 1; k < i + n + 1; k++) {
-              if (board[k][col] != currentPlayer){
+              if (board[k][col] != currentPlayer) {
                 matchfound = false;
                 break;
               }
@@ -164,18 +162,6 @@ class BoardClass {
           bool matchfound = true;
           if (board[i][col] == -1) {
             for (int k = i + 1; k <= i + n; k++) {
-              if (board[k][col] != currentPlayer)
-                {
-                  matchfound = false;
-                  break;
-                }
-            }
-          }
-          if (matchfound) counter++;
-
-          matchfound = true;
-          if (board[i + n][col] == -1) {
-            for (int k = i; k < i + n; k++) {
               if (board[k][col] != currentPlayer) {
                 matchfound = false;
                 break;
@@ -183,6 +169,18 @@ class BoardClass {
             }
           }
           if (matchfound) counter++;
+
+          if (!matchfound) {
+            if (board[i + n][col] == -1) {
+              for (int k = i; k < i + n; k++) {
+                if (board[k][col] != currentPlayer) {
+                  matchfound = false;
+                  break;
+                }
+              }
+            }
+            if (matchfound) counter++;
+          }
         }
       }
     }
@@ -220,31 +218,32 @@ class BoardClass {
           }
           if (matchfound) counter++;
 
-          matchfound = true;
-          if (board[row][i + n] == -1) {
-            for (int k = i; k < i + n ; k++) {
-              if (board[row][k] != currentPlayer) {
-                matchfound = false;
-                break;
+          if (!matchfound) {
+            if (board[row][i + n] == -1) {
+              for (int k = i; k < i + n; k++) {
+                if (board[row][k] != currentPlayer) {
+                  matchfound = false;
+                  break;
+                }
               }
             }
+            if (matchfound) counter++;
           }
-          if (matchfound) counter++;
         }
       }
     }
     return counter;
   }
 
-  int searchLeftDiagonalForLooseEnd(int n, int looseEndCount,
-      int currentPlayer) {
+  int searchLeftDiagonalForLooseEnd(
+      int n, int looseEndCount, int currentPlayer) {
     int counter = 0;
 
     if (looseEndCount == 2) {
       for (int row = 0; row + n + 1 < 10; row++) {
         for (int i = 0; i + n + 1 < 10; i++) {
           bool matchfound = true;
-          if ( board[row][i] == -1 && board[row + n + 1][i + n + 1] == -1) {
+          if (board[row][i] == -1 && board[row + n + 1][i + n + 1] == -1) {
             for (int k = i + 1; k < i + n + 1; k++) {
               if (board[row + (k - i - 1)][k] != currentPlayer)
                 matchfound = false;
@@ -254,38 +253,39 @@ class BoardClass {
         }
       }
     } else {
-      for (int row = 0; row + n  < 10; row++) {
-        for (int i = 0; i + n  < 10; i++) {
+      for (int row = 0; row + n < 10; row++) {
+        for (int i = 0; i + n < 10; i++) {
           bool matchfound = true;
           if (board[row][i] == -1) {
-            for (int k = i + 1; k <= i + n ; k++) {
-              if (board[row + (k - i )][k] != currentPlayer)
+            for (int k = i + 1; k <= i + n; k++) {
+              if (board[row + (k - i - 1)][k] != currentPlayer)
                 matchfound = false;
             }
           }
           if (matchfound) counter++;
 
-          matchfound = true;
-          if (board[row + n][i + n] == -1) {
-            for (int k = i; k < i + n ; k++) {
-              if (board[row + (k - i)][k] != currentPlayer)
-                matchfound = false;
+          if (!matchfound) {
+            if (board[row + n][i + n] == -1) {
+              for (int k = i; k < i + n; k++) {
+                if (board[row + (k - i)][k] != currentPlayer)
+                  matchfound = false;
+              }
             }
+            if (matchfound) counter++;
           }
-          if (matchfound) counter++;
         }
       }
     }
     return counter;
   }
 
-  int searchRightDiagonalForLooseEnd(int n, int looseEndCount,
-      int currentPlayer) {
+  int searchRightDiagonalForLooseEnd(
+      int n, int looseEndCount, int currentPlayer) {
     int counter = 0;
 
     if (looseEndCount == 2) {
       for (int row = 9; row - n - 1 >= 0; row--) {
-        for (int i = 0; i+n+1 <10; i++) {
+        for (int i = 0; i + n + 1 < 10; i++) {
           bool matchfound = true;
           if (board[row][i] == -1 && board[row - n - 1][i + n + 1] == -1) {
             for (int k = i + 1; k < i + n + 1; k++) {
@@ -297,8 +297,8 @@ class BoardClass {
         }
       }
     } else {
-      for (int row = 9; row - n  >= 0; row--) {
-        for (int i = 0; i+n <10; i++) {
+      for (int row = 9; row - n >= 0; row--) {
+        for (int i = 0; i + n < 10; i++) {
           bool matchfound = true;
           if (board[row][i] == -1) {
             for (int k = i + 1; k <= i + n; k++) {
@@ -308,20 +308,19 @@ class BoardClass {
           }
           if (matchfound) counter++;
 
-          matchfound = true;
-          if (board[row - n - 1][i + n] == -1) {
-            for (int k = i; k <i+n; k++) {
-              if (board[row - (k - i)][k] != currentPlayer)
-                matchfound = false;
+          if (!matchfound) {
+            if (board[row - n][i + n] == -1) {
+              for (int k = i; k < i + n; k++) {
+                if (board[row - (k - i)][k] != currentPlayer)
+                  matchfound = false;
+              }
             }
+            if (matchfound) counter++;
           }
-          if (matchfound) counter++;
         }
       }
     }
 
     return counter;
   }
-
 }
-
