@@ -9,8 +9,9 @@ class Consts {
 
 class CustomDialog extends StatelessWidget {
   final String message;
+  final String imageName;
 
-  CustomDialog({@required this.message});
+  CustomDialog({@required this.message, @required this.imageName});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,7 @@ class CustomDialog extends StatelessWidget {
             left: Consts.padding,
             right: Consts.padding,
           ),
-          margin: EdgeInsets.only(top: Consts.avatarRadius),
+          margin: EdgeInsets.only(top: MediaQuery.of(context).size.height *0.4 ),
           decoration: new BoxDecoration(
             color: Colors.white,
             shape: BoxShape.rectangle,
@@ -60,43 +61,19 @@ class CustomDialog extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 16.0),
-              Text(
-                "blah blah blah",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16.0,
-                ),
-              ),
-              SizedBox(height: 24.0),
-              Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text('asasdsd')),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                padding: EdgeInsets.only(left: 120),
-                child: Row(
-                  children: <Widget>[
-                    FlatButton(
-                      onPressed: () {
-                        Navigator.of(context).pop(); // To close the dialog
-                      },
-                      child: Text('cancel'),
-                    ),
-                    FlatButton(
-                      onPressed: () {
-                        Navigator.of(context).pop(); // To close the dialog
-                      },
-                      child: Text('send'),
-                    ),
-                  ],
+              Center(
+                child: FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // To close the dialog
+                  },
+                  child: Text('back',style: TextStyle(fontSize: 16.0),),
                 ),
               ),
             ],
           ),
         ),
         Positioned(
+          top: MediaQuery.of(context).size.height*0.4 - 82,
             left: Consts.padding,
             right: Consts.padding,
             child: Center(
@@ -105,11 +82,12 @@ class CustomDialog extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   new Container(
-                      width: Consts.avatarRadius * 2,
-                      height: Consts.avatarRadius * 2,
+                      width: Consts.avatarRadius * 2.4,
+                      height: Consts.avatarRadius * 2.4,
                       decoration: new BoxDecoration(
-                        color: Colors.blueAccent,
-                        shape: BoxShape.circle,
+                        color: Colors.transparent,
+                        shape: BoxShape.rectangle,
+                        image: DecorationImage(image: AssetImage(imageName))
                       )),
                 ],
               ),

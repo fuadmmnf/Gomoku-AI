@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:gomoku_ai/widgets/switcher/barItem.dart';
-import 'package:gomoku_ai/utils/singleton.dart';
 import 'package:gomoku_ai/widgets/customDialog.dart';
+import 'package:gomoku_ai/utils/singleton.dart';
+import 'package:gomoku_ai/utils/minimax.dart';
 
 class GamePage extends StatefulWidget {
   final List<BarItem> barItems = [
@@ -16,17 +17,14 @@ class GamePage extends StatefulWidget {
 
 class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
   final Singleton _singleton = Singleton();
-  var isSelected = new List(100);
   int selectedPlayer;
   int previousMove = -1;
+  bool isGameOver = false;
 
   @override
   void initState() {
+    _singleton.clearBoard();
     selectedPlayer = _singleton.getCurrentPlayer();
-    for (int i = 0; i < 100; i++) {
-      isSelected[i] = false;
-    }
-
     super.initState();
   }
 
@@ -35,23 +33,28 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
     return SafeArea(
       top: true,
       child: Scaffold(
-//        appBar: AppBar(
-//          centerTitle: true,
-//          automaticallyImplyLeading: false,
-//          backgroundColor: Colors.red[300],
-//          title: Text(
-//            "Gomoku_AI",
-//            style: TextStyle(
-//              fontSize: 18.0,
-//              color: Colors.white70,
-//            ),
-//          ),
-//        ),
+        appBar: AppBar(
+          elevation: 10.0,
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.white,
+          title: Text(
+            "Gomoku_AI",
+            style: TextStyle(
+              fontSize: 24.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+        ),
         backgroundColor: Colors.white,
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
+            SizedBox(
+              height: 5.0,
+            ),
             Container(
               child: Padding(
                 padding: const EdgeInsets.only(
@@ -60,6 +63,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: _buildBarItems(),
+//                  children: null,
                 ),
               ),
             ),
@@ -68,7 +72,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
             ),
             Container(
               width: MediaQuery.of(context).size.width * .95,
-              height: MediaQuery.of(context).size.height * .60,
+              height: MediaQuery.of(context).size.height * .50,
               child: Align(
                   alignment: Alignment.center,
                   child: Container(
@@ -107,41 +111,34 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                                               new BorderRadius.circular(30.0)),
                                       splashColor: Colors.white10,
                                       color: (previousMove == i * 10 + j)
-                                          ? (isSelected[i * 10 + j]
-                                              ? ((_singleton.getBoard().getPlayer(i, j) == 1)
+                                          ? (_singleton
+                                                      .getBoard()
+                                                      .getPlayer(i, j) !=
+                                                  -1
+                                              ? ((_singleton
+                                                          .getBoard()
+                                                          .getPlayer(i, j) ==
+                                                      1)
                                                   ? Colors.black
                                                   : Colors.white)
                                               : Colors.red[200])
-                                          : (isSelected[i * 10 + j]
-                                                  ? ((_singleton.getBoard().getPlayer(i, j) == 1)
+                                          : (_singleton
+                                                          .getBoard()
+                                                          .getPlayer(i, j) !=
+                                                      -1
+                                                  ? ((_singleton
+                                                              .getBoard()
+                                                              .getPlayer(
+                                                                  i, j) ==
+                                                          1)
                                                       ? Colors.black
                                                       : Colors.white)
                                                   : Colors.red[200])
                                               .withOpacity(0.70),
                                       child: null,
                                       onPressed: () {
-                                        setState(() {
-                                          if (!isSelected[i * 10 + j]) {
-                                            isSelected[i * 10 + j] = true;
-                                            _singleton.getBoard().changeEntry(
-                                                i, j, selectedPlayer);
-
-                                            if( _singleton.getBoard().searchForMatch(5, _singleton.getCurrentPlayer()) )
-                                            {
-                                              Future.delayed(Duration.zero, () =>
-                                                  showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext context) => CustomDialog(message: "Player" + _singleton.getCurrentPlayer().toString() + " wins",)
-                                                  )
-                                              );
-                                            }
-
-                                            previousMove = i * 10 + j;
-                                            _singleton.changeCurrentPlayer();
-                                            selectedPlayer =
-                                                _singleton.getCurrentPlayer();
-                                          }
-                                        });
+                                        if(_singleton.getCurrentPlayer() == 1)
+                                          placeMove(i, j);
                                       },
                                     ),
                                   ),
@@ -151,6 +148,30 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                       ],
                     ),
                   )),
+            ),
+            SizedBox(
+              height: 20.0,
+            ),
+            Container(
+              width: 55,
+              height: 55,
+              decoration: BoxDecoration(),
+              child: RaisedButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(30.0)),
+                splashColor: Colors.red[300],
+                color: Colors.red[300],
+                child: Icon(
+                  Icons.replay,
+                  color: Colors.red[100],
+                ),
+                onPressed: () {
+                  _singleton.clearBoard();
+                  selectedPlayer = _singleton.getCurrentPlayer();
+                  isGameOver = false;
+                  setState(() {});
+                },
+              ),
             ),
           ],
         ),
@@ -207,5 +228,78 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
       ));
     }
     return _barItems;
+  }
+
+  void displayDialogIfGameOver() {
+    if (_singleton.getBoard().searchForMatch(5, selectedPlayer) > 0) {
+      isGameOver = true;
+
+      Future.delayed(
+          Duration.zero,
+          () => showDialog(
+              context: context,
+              builder: (BuildContext context) => CustomDialog(
+                  message: ((selectedPlayer == 1) ? "You" : "AI") + " won",
+                  imageName: (selectedPlayer == 1)
+                      ? "asset/images/smile.png"
+                      : "asset/images/ai.png")));
+    }
+
+    if (_singleton.getBoard().isBoardFinished()) {
+      isGameOver = true;
+
+      Future.delayed(
+          Duration.zero,
+          () => showDialog(
+              context: context,
+              builder: (BuildContext context) => CustomDialog(
+                  message: "Draw", imageName: "asset/images/smile.png")));
+    }
+  }
+
+  placeMove(int i, int j) async {
+    print(i.toString()+"_"+j.toString());
+    if (!isGameOver) {
+      if (_singleton.getBoard().getPlayer(i, j) == -1) {
+        _singleton.getBoard().changeEntry(i, j, selectedPlayer);
+        setState(() {});
+        displayDialogIfGameOver();
+
+        previousMove = i * 10 + j;
+
+        if (!isGameOver) {
+          _singleton.changeCurrentPlayer();
+
+          setState(() {
+            selectedPlayer = _singleton.getCurrentPlayer();
+          });
+          await Future.delayed(const Duration(milliseconds: 450));
+
+          await moveAI();
+          if (!isGameOver) {
+//            previousMove = aiMove;
+            _singleton.changeCurrentPlayer();
+
+
+            setState(() {
+              selectedPlayer = _singleton.getCurrentPlayer();
+            });
+          }
+        }
+      }
+    }
+  }
+
+  Future moveAI() {
+    Minimax minimax = Minimax();
+
+    int best_moves = minimax.generateBestMove(_singleton.getBoard());
+
+    _singleton.getBoard().changeEntry(
+        (best_moves / 10).toInt(), best_moves % 10, selectedPlayer);
+    setState(() {});
+
+    displayDialogIfGameOver();
+//    return best_moves;
   }
 }

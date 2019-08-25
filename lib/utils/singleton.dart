@@ -20,9 +20,15 @@ class Singleton {
     return board;
   }
 
+  void clearBoard(){
+    board = BoardClass();
+    currentPlayer = 1;
+  }
+
   int getCurrentPlayer(){
     return currentPlayer;
   }
+
 
   void changeCurrentPlayer(){
     currentPlayer = (currentPlayer == 1)? 2: 1;

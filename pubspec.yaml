@@ -52,6 +52,9 @@ flutter:
   assets:
     - asset/images/logo.png
     - asset/images/robot.png
+    - asset/images/ai.png
+    - asset/images/podium.png
+    - asset/images/smile.png
 
     # An image asset can refer to one or more resolution-specific "variants", see
     # https://flutter.dev/assets-and-images/#resolution-aware.
