@@ -94,21 +94,19 @@ class Minimax{
   int cutOffEvaluation(BoardClass board) {
     int value = 0;
 
-    value += 1200 * board.searchForLooseEnds(4, 2, AI);
+    value += 2000 * board.searchForLooseEnds(4, 2, AI);
     value += 1000 * board.searchForLooseEnds(3, 2, AI);
     value += 100 * board.searchForLooseEnds(2, 2, AI);
-    value += 1000 * board.searchForLooseEnds(4, 1, AI);
+    value += 1500 * board.searchForLooseEnds(4, 1, AI);
     value += 150 * board.searchForLooseEnds(3, 1, AI);
     value += 10 * board.searchForLooseEnds(2, 1, AI);
-    value += 0 * board.searchForLooseEnds(1, 1, AI);
 
-    value -= 1200 * board.searchForLooseEnds(4, 2, HUMAN);
+    value -= 2000 * board.searchForLooseEnds(4, 2, HUMAN);
     value -= 1000 * board.searchForLooseEnds(3, 2, HUMAN);
     value -= 100 * board.searchForLooseEnds(2, 2, HUMAN);
-    value -= 1000 * board.searchForLooseEnds(4, 1, HUMAN);
+    value -= 1500 * board.searchForLooseEnds(4, 1, HUMAN);
     value -= 150 * board.searchForLooseEnds(3, 1, HUMAN);
     value -= 10 * board.searchForLooseEnds(2, 1, HUMAN);
-    value -= 0 * board.searchForLooseEnds(1, 1, HUMAN);
 
 
 

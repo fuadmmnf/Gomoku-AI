@@ -297,6 +297,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
 
     _singleton.getBoard().changeEntry(
         (best_moves / 10).toInt(), best_moves % 10, selectedPlayer);
+    previousMove = best_moves;
     setState(() {});
 
     displayDialogIfGameOver();

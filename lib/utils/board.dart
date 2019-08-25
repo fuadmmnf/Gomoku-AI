@@ -162,7 +162,7 @@ class BoardClass {
         for (int i = 0; i + n < 10; i++) {
           bool matchfound = true;
           if (board[i][col] == -1) {
-            for (int k = i + 1; k < i + n; k++) {
+            for (int k = i + 1; k <= i + n; k++) {
               if (board[k][col] != currentPlayer)
                 {
                   matchfound = false;
@@ -210,7 +210,7 @@ class BoardClass {
         for (int i = 0; i + n < 10; i++) {
           bool matchfound = true;
           if (board[row][i] == -1) {
-            for (int k = i + 1; k < i + n; k++) {
+            for (int k = i + 1; k <= i + n; k++) {
               if (board[row][k] != currentPlayer) {
                 matchfound = false;
                 break;
@@ -257,7 +257,7 @@ class BoardClass {
         for (int i = 0; i + n  < 10; i++) {
           bool matchfound = true;
           if (board[row][i] == -1) {
-            for (int k = i + 1; k < i + n ; k++) {
+            for (int k = i + 1; k <= i + n ; k++) {
               if (board[row + (k - i )][k] != currentPlayer)
                 matchfound = false;
             }
@@ -300,7 +300,7 @@ class BoardClass {
         for (int i = 0; i+n <10; i++) {
           bool matchfound = true;
           if (board[row][i] == -1) {
-            for (int k = i + 1; k < i + n; k++) {
+            for (int k = i + 1; k <= i + n; k++) {
               if (board[row - (k - i - 1)][k] != currentPlayer)
                 matchfound = false;
             }
