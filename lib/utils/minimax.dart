@@ -10,7 +10,7 @@ class Minimax{
 
   int bestMove;
 
-  final maxDepth = 2;
+  final maxDepth = 3;
   var dX = [0, 0, 1, -1, 1, -1, 1, -1];
   var dY = [1, -1, 0, 0, 1, -1, -1, 1];
 
@@ -25,11 +25,16 @@ class Minimax{
     if(depth > maxDepth)
       return cutOffEvaluation(board);
 
-    if(board.searchForMatch(5, HUMAN)> 0)
+    if(board.searchForMatch(5, HUMAN)> 0){
+      if(board.searchForMatch(5, AI)>0)
+        return infinite;
       return -infinite;
-    else if(board.searchForMatch(5, AI) >0)
+    } else if(board.searchForMatch(5, AI) >0){
+      if(board.searchForMatch(5, HUMAN) >0){
+        return -infinite;
+      }
       return infinite;
-
+    }
     int bestVal;
     List<BoardClass> blankTiles = [];
     List<bool> isExpanded = List(100);
@@ -95,16 +100,16 @@ class Minimax{
     int value = 0;
 
     value += 2000 * board.searchForLooseEnds(4, 2, AI);
-    value += 1000 * board.searchForLooseEnds(3, 2, AI);
+    value += 1800 * board.searchForLooseEnds(3, 2, AI);
     value += 100 * board.searchForLooseEnds(2, 2, AI);
-    value += 1500 * board.searchForLooseEnds(4, 1, AI);
+    value += 1850 * board.searchForLooseEnds(4, 1, AI);
     value += 150 * board.searchForLooseEnds(3, 1, AI);
     value += 10 * board.searchForLooseEnds(2, 1, AI);
 
     value -= 2000 * board.searchForLooseEnds(4, 2, HUMAN);
-    value -= 1000 * board.searchForLooseEnds(3, 2, HUMAN);
+    value -= 1800 * board.searchForLooseEnds(3, 2, HUMAN);
     value -= 100 * board.searchForLooseEnds(2, 2, HUMAN);
-    value -= 1500 * board.searchForLooseEnds(4, 1, HUMAN);
+    value -= 1850 * board.searchForLooseEnds(4, 1, HUMAN);
     value -= 150 * board.searchForLooseEnds(3, 1, HUMAN);
     value -= 10 * board.searchForLooseEnds(2, 1, HUMAN);
 

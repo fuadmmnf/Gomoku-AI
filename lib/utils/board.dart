@@ -2,8 +2,9 @@ import 'dart:core';
 
 class BoardClass {
   List<List<num>> board = new List.generate(10, (i) => new List(10));
-
+  bool isGameOver;
   BoardClass() {
+    isGameOver = false;
     for (int i = 0; i < 10; i++) {
       for (int j = 0; j < 10; j++) {
         board[i][j] = -1;

@@ -19,7 +19,6 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
   final Singleton _singleton = Singleton();
   int selectedPlayer;
   int previousMove = -1;
-  bool isGameOver = false;
 
   @override
   void initState() {
@@ -168,7 +167,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
                 onPressed: () {
                   _singleton.clearBoard();
                   selectedPlayer = _singleton.getCurrentPlayer();
-                  isGameOver = false;
+                  _singleton.getBoard().isGameOver = false;
                   setState(() {});
                 },
               ),
@@ -232,7 +231,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
 
   void displayDialogIfGameOver() {
     if (_singleton.getBoard().searchForMatch(5, selectedPlayer) > 0) {
-      isGameOver = true;
+      _singleton.getBoard().isGameOver = true;
 
       Future.delayed(
           Duration.zero,
@@ -246,7 +245,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
     }
 
     if (_singleton.getBoard().isBoardFinished()) {
-      isGameOver = true;
+      _singleton.getBoard().isGameOver = true;
 
       Future.delayed(
           Duration.zero,
@@ -259,7 +258,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
 
   placeMove(int i, int j) async {
     print(i.toString()+"_"+j.toString());
-    if (!isGameOver) {
+    if (!_singleton.getBoard().isGameOver) {
       if (_singleton.getBoard().getPlayer(i, j) == -1) {
         _singleton.getBoard().changeEntry(i, j, selectedPlayer);
         setState(() {});
@@ -267,7 +266,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
 
         previousMove = i * 10 + j;
 
-        if (!isGameOver) {
+        if (!_singleton.getBoard().isGameOver) {
           _singleton.changeCurrentPlayer();
 
           setState(() {
@@ -276,7 +275,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
           await Future.delayed(const Duration(milliseconds: 450));
 
           await moveAI();
-          if (!isGameOver) {
+          if (!_singleton.getBoard().isGameOver) {
 //            previousMove = aiMove;
             _singleton.changeCurrentPlayer();
 
