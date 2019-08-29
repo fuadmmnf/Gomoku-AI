@@ -36,7 +36,7 @@ class BoardClass {
   int searchRow(int n, int currentPlayer) {
     int counter = 0;
     for (int row = 0; row < 10; row++) {
-      for (int i = 0; i <= 10 - n; i++) {
+      for (int i = 0; i < 10 - n; i++) {
         if (board[row][i] == currentPlayer) {
           int j;
           for (j = 1; j < n; j++) {
@@ -57,7 +57,7 @@ class BoardClass {
   int searchColumn(int n, int currentPlayer) {
     int counter = 0;
     for (int col = 0; col < 10; col++) {
-      for (int i = 0; i <= 10 - n; i++) {
+      for (int i = 0; i < 10 - n; i++) {
         if (board[i][col] == currentPlayer) {
           int j;
           for (j = 1; j < n; j++) {
@@ -77,8 +77,8 @@ class BoardClass {
 
   int searchRightDiagonal(int n, int currentPlayer) {
     int counter = 0;
-    for (int row = 0; row <= 10 - n; row++) {
-      for (int i = 0; i <= 10 - n; i++) {
+    for (int row = 0; row < 10 - n; row++) {
+      for (int i = 0; i < 10 - n; i++) {
         if (board[row][i] == currentPlayer) {
           int j;
           for (j = 1; j < n; j++) {
@@ -98,8 +98,8 @@ class BoardClass {
 
   int searchLeftDiagonal(int n, int currentPlayer) {
     int counter = 0;
-    for (int row = 9; row >= 9 - n; row--) {
-      for (int i = 0; i <= 10 - n; i++) {
+    for (int row = 9; row > 9 - n; row--) {
+      for (int i = 0; i < 10 - n; i++) {
         if (board[row][i] == currentPlayer) {
           int j;
           for (j = 1; j < n; j++) {
@@ -125,8 +125,9 @@ class BoardClass {
   }
 
   int searchForLooseEnds(int n, int looseEndCount, int currentPlayer) {
-    return (searchRowForLooseEnd(n, looseEndCount, currentPlayer) +
+    return (
         searchColumnForLooseEnd(n, looseEndCount, currentPlayer) +
+        searchRowForLooseEnd(n, looseEndCount, currentPlayer) +
         searchLeftDiagonalForLooseEnd(n, looseEndCount, currentPlayer) +
         searchRightDiagonalForLooseEnd(n, looseEndCount, currentPlayer));
   }

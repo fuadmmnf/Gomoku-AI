@@ -22,19 +22,13 @@ class Minimax{
   }
 
   int minimax(BoardClass board, int depth, int currentPlayer, int alpha, int beta){
-    if(depth > maxDepth)
-      return cutOffEvaluation(board);
 
-    if(board.searchForMatch(5, HUMAN)> 0){
-      if(board.searchForMatch(5, AI)>0)
-        return infinite;
-      return -infinite;
-    } else if(board.searchForMatch(5, AI) >0){
-      if(board.searchForMatch(5, HUMAN) >0){
-        return -infinite;
-      }
-      return infinite;
-    }
+
+
+    if(depth > maxDepth)
+      return cutOffEvaluation(board, currentPlayer);
+
+
     int bestVal;
     List<BoardClass> blankTiles = [];
     List<bool> isExpanded = List(100);
@@ -64,6 +58,15 @@ class Minimax{
         }
       }
     }
+
+    for(BoardClass tempBoard in blankTiles){
+      if(tempBoard.searchForMatch(5, HUMAN)> 0){
+        return -infinite;
+      } else if(tempBoard.searchForMatch(5, AI) >0){
+        return infinite;
+      }
+    }
+
 
 
 
@@ -96,23 +99,27 @@ class Minimax{
 
   }
 
-  int cutOffEvaluation(BoardClass board) {
+  int cutOffEvaluation(BoardClass board, int currentPlayer ) {
     int value = 0;
+    int alternatePlayer = (currentPlayer == AI)? HUMAN:AI;
+    int sign = (currentPlayer == AI)? 1 : -1;
+//
 
-    value += 2000 * board.searchForLooseEnds(4, 2, AI);
-    value += 1800 * board.searchForLooseEnds(3, 2, AI);
-    value += 100 * board.searchForLooseEnds(2, 2, AI);
-    value += 1900 * board.searchForLooseEnds(4, 1, AI);
-    value += 150 * board.searchForLooseEnds(3, 1, AI);
-    value += 10 * board.searchForLooseEnds(2, 1, AI);
 
-    value -= 2000 * board.searchForLooseEnds(4, 2, HUMAN);
-    value -= 1800 * board.searchForLooseEnds(3, 2, HUMAN);
-    value -= 100 * board.searchForLooseEnds(2, 2, HUMAN);
-    value -= 1900 * board.searchForLooseEnds(4, 1, HUMAN);
-    value -= 150 * board.searchForLooseEnds(3, 1, HUMAN);
-    value -= 10 * board.searchForLooseEnds(2, 1, HUMAN);
-
+    value += sign*5000 * board.searchForLooseEnds(4, 2, currentPlayer);
+    value += sign*900 * board.searchForLooseEnds(3, 2, currentPlayer);
+    value += sign*500 * board.searchForLooseEnds(2, 2, currentPlayer);
+    value += sign*300 * board.searchForLooseEnds(2, 1, currentPlayer);
+    value +=  sign*2000* board.searchForLooseEnds(4, 1, currentPlayer);
+    value += sign*200 * board.searchForLooseEnds(3, 1, currentPlayer);
+//
+    value -= sign*5000 * board.searchForLooseEnds(4, 2, alternatePlayer);
+    value -= sign*900 * board.searchForLooseEnds(3, 2, alternatePlayer);
+    value -= sign*500 * board.searchForLooseEnds(2, 2, alternatePlayer);
+    value -= sign*300 * board.searchForLooseEnds(2, 1, alternatePlayer);
+    value -= sign*2000* board.searchForLooseEnds(4, 1, alternatePlayer);
+    value -= sign*200 * board.searchForLooseEnds(3, 1, alternatePlayer);
+//
 
 
     return value;
