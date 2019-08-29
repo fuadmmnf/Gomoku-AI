@@ -23,7 +23,12 @@ class Minimax{
 
   int minimax(BoardClass board, int depth, int currentPlayer, int alpha, int beta){
 
+    int alternatePlayer = (currentPlayer == AI)? HUMAN:AI;
 
+    if(board.searchForMatch(5, alternatePlayer)> 0){
+      if(alternatePlayer == AI) return infinite;
+      else return -infinite;
+    }
 
     if(depth > maxDepth)
       return cutOffEvaluation(board, currentPlayer);
@@ -59,13 +64,10 @@ class Minimax{
       }
     }
 
-    for(BoardClass tempBoard in blankTiles){
-      if(tempBoard.searchForMatch(5, HUMAN)> 0){
-        return -infinite;
-      } else if(tempBoard.searchForMatch(5, AI) >0){
-        return infinite;
-      }
-    }
+
+
+
+
 
 
 
@@ -106,19 +108,17 @@ class Minimax{
 //
 
 
-    value += sign*5000 * board.searchForLooseEnds(4, 2, currentPlayer);
-    value += sign*900 * board.searchForLooseEnds(3, 2, currentPlayer);
+    value += sign*4000 * board.searchForLooseEnds(4, 2, currentPlayer);
+    value += sign*2000 * board.searchForLooseEnds(3, 2, currentPlayer);
     value += sign*500 * board.searchForLooseEnds(2, 2, currentPlayer);
-    value += sign*300 * board.searchForLooseEnds(2, 1, currentPlayer);
-    value +=  sign*2000* board.searchForLooseEnds(4, 1, currentPlayer);
-    value += sign*200 * board.searchForLooseEnds(3, 1, currentPlayer);
+    value +=  sign*2100* board.searchForLooseEnds(4, 1, currentPlayer);
+//    value += sign*200 * board.searchForLooseEnds(3, 1, currentPlayer);
 //
-    value -= sign*5000 * board.searchForLooseEnds(4, 2, alternatePlayer);
-    value -= sign*900 * board.searchForLooseEnds(3, 2, alternatePlayer);
+    value -= sign*3000 * board.searchForLooseEnds(4, 2, alternatePlayer);
+    value -= sign*1500 * board.searchForLooseEnds(3, 2, alternatePlayer);
     value -= sign*500 * board.searchForLooseEnds(2, 2, alternatePlayer);
-    value -= sign*300 * board.searchForLooseEnds(2, 1, alternatePlayer);
     value -= sign*2000* board.searchForLooseEnds(4, 1, alternatePlayer);
-    value -= sign*200 * board.searchForLooseEnds(3, 1, alternatePlayer);
+//    value -= sign*200 * board.searchForLooseEnds(3, 1, alternatePlayer);
 //
 
 
