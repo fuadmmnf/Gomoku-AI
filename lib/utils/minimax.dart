@@ -31,7 +31,7 @@ class Minimax{
     }
 
     if(depth > maxDepth)
-      return cutOffEvaluation(board, currentPlayer);
+      return cutOffEvaluation(board, alternatePlayer);
 
 
     int bestVal;
@@ -107,18 +107,30 @@ class Minimax{
     int sign = (currentPlayer == AI)? 1 : -1;
 //
 
+    if( board.searchForLooseEnds(4, 2, alternatePlayer)>0)
+      return -sign*infinite;
 
-    value += sign*4000 * board.searchForLooseEnds(4, 2, currentPlayer);
-    value += sign*2000 * board.searchForLooseEnds(3, 2, currentPlayer);
-    value += sign*500 * board.searchForLooseEnds(2, 2, currentPlayer);
-    value +=  sign*2100* board.searchForLooseEnds(4, 1, currentPlayer);
-//    value += sign*200 * board.searchForLooseEnds(3, 1, currentPlayer);
+    if( board.searchForLooseEnds(4, 2, currentPlayer)>0)
+      return sign*infinite;
+
+
+//    if( board.searchForLooseEnds(4, 1, alternatePlayer)>0)
+//      return -sign*infinite;
+//    if( board.searchForLooseEnds(4, 1, currentPlayer)>0)
+//      return sign*infinite;
 //
-    value -= sign*3000 * board.searchForLooseEnds(4, 2, alternatePlayer);
-    value -= sign*1500 * board.searchForLooseEnds(3, 2, alternatePlayer);
-    value -= sign*500 * board.searchForLooseEnds(2, 2, alternatePlayer);
-    value -= sign*2000* board.searchForLooseEnds(4, 1, alternatePlayer);
-//    value -= sign*200 * board.searchForLooseEnds(3, 1, alternatePlayer);
+
+    if( board.searchForLooseEnds(3, 2, alternatePlayer)>0)
+      return -sign*infinite;
+    if( board.searchForLooseEnds(3, 2, currentPlayer)>0)
+      return sign*infinite;
+
+
+    value +=  sign*2510* board.searchForLooseEnds(4, 1, currentPlayer);
+    value += sign*200 * board.searchForLooseEnds(3, 1, currentPlayer);
+//
+    value -= sign*2500* board.searchForLooseEnds(4, 1, alternatePlayer);
+    value -= sign*200 * board.searchForLooseEnds(3, 1, alternatePlayer);
 //
 
 
