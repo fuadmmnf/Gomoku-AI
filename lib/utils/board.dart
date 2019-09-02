@@ -153,8 +153,9 @@ class BoardClass {
                 break;
               }
             }
+            if (matchfound) counter++;
           }
-          if (matchfound) counter++;
+
         }
       }
     } else {
@@ -168,8 +169,9 @@ class BoardClass {
                 break;
               }
             }
+            if (matchfound) counter++;
+
           }
-          if (matchfound) counter++;
 
           if (!matchfound) {
             if (board[i + n][col] == -1) {
@@ -179,8 +181,8 @@ class BoardClass {
                   break;
                 }
               }
+              if (matchfound) counter++;
             }
-            if (matchfound) counter++;
           }
         }
       }
@@ -201,8 +203,9 @@ class BoardClass {
                 break;
               }
             }
+            if (matchfound) counter++;
+
           }
-          if (matchfound) counter++;
         }
       }
     } else {
@@ -216,8 +219,9 @@ class BoardClass {
                 break;
               }
             }
+            if (matchfound) counter++;
+
           }
-          if (matchfound) counter++;
 
           if (!matchfound) {
             if (board[row][i + n] == -1) {
@@ -227,8 +231,9 @@ class BoardClass {
                   break;
                 }
               }
+              if (matchfound) counter++;
+
             }
-            if (matchfound) counter++;
           }
         }
       }
@@ -249,8 +254,9 @@ class BoardClass {
               if (board[row + (k - i - 1)][k] != currentPlayer)
                 matchfound = false;
             }
+            if (matchfound) counter++;
+
           }
-          if (matchfound) counter++;
         }
       }
     } else {
@@ -262,8 +268,9 @@ class BoardClass {
               if (board[row + (k - i - 1)][k] != currentPlayer)
                 matchfound = false;
             }
+            if (matchfound) counter++;
+
           }
-          if (matchfound) counter++;
 
           if (!matchfound) {
             if (board[row + n][i + n] == -1) {
@@ -271,8 +278,8 @@ class BoardClass {
                 if (board[row + (k - i)][k] != currentPlayer)
                   matchfound = false;
               }
+              if (matchfound) counter++;
             }
-            if (matchfound) counter++;
           }
         }
       }
@@ -293,8 +300,9 @@ class BoardClass {
               if (board[row - (k - i - 1)][k] != currentPlayer)
                 matchfound = false;
             }
+            if (matchfound) counter++;
+
           }
-          if (matchfound) counter++;
         }
       }
     } else {
@@ -306,8 +314,9 @@ class BoardClass {
               if (board[row - (k - i - 1)][k] != currentPlayer)
                 matchfound = false;
             }
+            if (matchfound) counter++;
+
           }
-          if (matchfound) counter++;
 
           if (!matchfound) {
             if (board[row - n][i + n] == -1) {
@@ -315,8 +324,8 @@ class BoardClass {
                 if (board[row - (k - i)][k] != currentPlayer)
                   matchfound = false;
               }
+              if (matchfound) counter++;
             }
-            if (matchfound) counter++;
           }
         }
       }
