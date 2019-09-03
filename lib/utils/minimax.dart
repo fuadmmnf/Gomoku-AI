@@ -111,8 +111,8 @@ class Minimax {
     int sign = (currentPlayer == AI) ? 1 : -1;
 //
 
-    value += sign*90500*board.searchForLooseEnds(4, 2, currentPlayer);
-    value -= sign*90500*board.searchForLooseEnds(4, 2, alternatePlayer);
+    value += sign*190500*board.searchForLooseEnds(4, 2, currentPlayer);
+    value -= sign*190500*board.searchForLooseEnds(4, 2, alternatePlayer);
 
     value += sign*75000*board.searchForLooseEnds(4, 1, currentPlayer);
     value -= sign*75000*board.searchForLooseEnds(4, 1, alternatePlayer);
