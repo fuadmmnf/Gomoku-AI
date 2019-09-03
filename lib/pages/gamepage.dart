@@ -71,7 +71,7 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
             ),
             Container(
               width: MediaQuery.of(context).size.width * .95,
-              height: MediaQuery.of(context).size.height * .50,
+              height: MediaQuery.of(context).size.height * .56,
               child: Align(
                   alignment: Alignment.center,
                   child: Container(

@@ -10,8 +10,8 @@ class Minimax {
       initMove = -1;
 
   final maxDepth = 3;
-  var dX = [0, 0, 1, -1, 1, -1, 1, -1];
-  var dY = [1, -1, 0, 0, 1, -1, -1, 1];
+  var dX = [0, 0, 1, -1, 1, -1, 1, -1, 0, 0, 2, -2, 2, -2, 2, -2,];
+  var dY = [1, -1, 0, 0, 1, -1, -1, 1, 2, -2, 0, 0, 2, -2, -2, 2,];
 
   int generateBestMove(BoardClass board) {
     int bestVal = minimax(board, 0, AI, -infinite, infinite);
@@ -63,6 +63,17 @@ class Minimax {
       }
     }
 
+//    for(int i=0; i<10; i++){
+//      for(int j=0; j<10; j++){
+//        if(board.getPlayer(i, j)==-1){
+//          blankTiles.add(board.copyBoard());
+//          blankTiles[blankTiles.length -1].changeEntry(i, j, currentPlayer);
+//          changeList.add(i*10 +j);
+//        }
+//
+//      }
+//    }
+
 
 
     if (currentPlayer == AI) {
@@ -100,53 +111,23 @@ class Minimax {
     int sign = (currentPlayer == AI) ? 1 : -1;
 //
 
-    if (board.searchForLooseEnds(4, 2, alternatePlayer) > 0) {
-      return -sign *20000;
-    }
-    if (board.searchForLooseEnds(4, 2, currentPlayer) > 0) {
-      return sign * 20000;
-    }
+    value += sign*90500*board.searchForLooseEnds(4, 2, currentPlayer);
+    value -= sign*90500*board.searchForLooseEnds(4, 2, alternatePlayer);
 
-    if (board.searchForLooseEnds(4, 1, alternatePlayer) > 0)
-      return -sign *10000 ;
-    if (board.searchForLooseEnds(4, 1, currentPlayer) > 0)
-      return sign * 10000 ;
+    value += sign*75000*board.searchForLooseEnds(4, 1, currentPlayer);
+    value -= sign*75000*board.searchForLooseEnds(4, 1, alternatePlayer);
 
+    value += sign*84000*board.searchForLooseEnds(3, 2, currentPlayer);
+    value -= sign*84000*board.searchForLooseEnds(3, 2, alternatePlayer);
 
-    if (board.searchForLooseEnds(3, 2, alternatePlayer) > 0)
-      return -sign * 5000;
-    if (board.searchForLooseEnds(3, 2, currentPlayer) > 0)
-      return sign * 5000 ;
+    value += sign*400*board.searchForLooseEnds(3, 1, currentPlayer);
+    value -= sign*400*board.searchForLooseEnds(3, 1, alternatePlayer);
 
-    if (board.searchForLooseEnds(2, 2, alternatePlayer) > 0)
-      return -sign * 3000 ;
-    if (board.searchForLooseEnds(2, 2, currentPlayer) > 0)
-      return sign * 3000 ;
+    value += sign*300*board.searchForLooseEnds(2, 2, currentPlayer);
+    value -= sign*300*board.searchForLooseEnds(2, 2, alternatePlayer);
 
-    if (board.searchForLooseEnds(1, 2, alternatePlayer) > 0)
-      return -sign * 1000 ;
-    if (board.searchForLooseEnds(1, 2, currentPlayer) > 0)
-      return sign * 1000 ;
-
-    if (board.searchForLooseEnds(1, 2, alternatePlayer) > 0)
-      return -sign * 1000 ;
-    if (board.searchForLooseEnds(1, 2, currentPlayer) > 0)
-      return sign * 1000;
-
-//    if(board.searchForMatch(4, alternatePlayer)>0)
-//      return -sign*(infinite-10);
-//    if(board.searchForMatch(4, currentPlayer)>0)
-//      return sign*(infinite-10);
-//
-//    if(board.searchForMatch(3, alternatePlayer)>0)
-//      return -sign*(infinite-15);
-//    if(board.searchForMatch(3, currentPlayer)>0)
-//      return sign*(infinite-15);
-//
-//    if(board.searchForMatch(2, alternatePlayer)>0)
-//      return -sign*(infinite-20);
-//    if(board.searchForMatch(2, currentPlayer)>0)
-//      return sign*(infinite-20);
+    value += sign*30*board.searchForLooseEnds(2, 1, currentPlayer);
+    value -= sign*30*board.searchForLooseEnds(2, 1, alternatePlayer);
 
 
     return value;
