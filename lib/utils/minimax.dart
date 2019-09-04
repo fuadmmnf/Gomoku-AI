@@ -2,7 +2,7 @@ import 'dart:math';
 import 'board.dart';
 
 class Minimax {
-  final infinite = 100000000;
+  final infinite = 9000000000.0;
   final int AI = 2;
   final int HUMAN = 1;
 
@@ -14,27 +14,27 @@ class Minimax {
   var dY = [1, -1, 0, 0, 1, -1, -1, 1, 2, -2, 0, 0, 2, -2, -2, 2,];
 
   int generateBestMove(BoardClass board) {
-    int bestVal = minimax(board, 0, AI, -infinite, infinite);
+    double bestVal = minimax(board, 0, AI, -infinite, infinite);
     print("bestVAl: "+bestVal.toString());
     return bestMove == -1 ? initMove : bestMove;
   }
 
-  int minimax(BoardClass board, int depth, int currentPlayer, int alpha,
-      int beta) {
+  double minimax(BoardClass board, int depth, int currentPlayer, double alpha,
+      double beta) {
     int alternatePlayer = (currentPlayer == AI) ? HUMAN : AI;
 
     if (board.searchForMatch(5, alternatePlayer) > 0) {
-      print(currentPlayer);
+      print(alternatePlayer);
       if (alternatePlayer == AI)
-        return infinite - depth;
+        return infinite - depth.toDouble();
       else
-        return -infinite + depth;
+        return -infinite + depth.toDouble();
     }
 
     if (depth > maxDepth)
       return cutOffEvaluation(board, alternatePlayer);
 
-    int bestVal;
+    double bestVal;
     List<BoardClass> blankTiles = [];
     List<int> changeList = [];
     List<bool> isExpanded = List(100);
@@ -78,6 +78,7 @@ class Minimax {
 //        if (beta <= alpha) break;
       }
     } else {
+      bestVal = infinite;
       for (int i = 0; i < 10; i++) {
         for (int j = 0; j < 10; j++) {
           if (board.getPlayer(i, j) != -1) {
@@ -89,7 +90,7 @@ class Minimax {
                 if (isExpanded[(i + dX[it]) * 10 + j + dY[it]] == false) {
                   isExpanded[(i + dX[it]) * 10 + j + dY[it]] = true;
 
-                  bestVal = infinite;
+
                   BoardClass tempBoard = board.copyBoard();
                   tempBoard.changeEntry(i + dX[it], j + dY[it], currentPlayer);
                   bestVal = min(
@@ -108,31 +109,98 @@ class Minimax {
     return bestVal;
   }
 
-  int cutOffEvaluation(BoardClass board, int currentPlayer ) {
-    int value = 0;
+  double cutOffEvaluation(BoardClass board, int currentPlayer ) {
+    double value = 0;
     int alternatePlayer = (currentPlayer == AI) ? HUMAN : AI;
     int sign = (currentPlayer == AI) ? 1 : -1;
 //
 
-    value += sign*190500*board.searchForLooseEnds(4, 2, currentPlayer);
-    value -= sign*190500*board.searchForLooseEnds(4, 2, alternatePlayer);
-
-    value += sign*95000*board.searchForLooseEnds(4, 1, currentPlayer);
-    value -= sign*95000*board.searchForLooseEnds(4, 1, alternatePlayer);
-
-    value += sign*84000*board.searchForLooseEnds(3, 2, currentPlayer);
-    value -= sign*84000*board.searchForLooseEnds(3, 2, alternatePlayer);
-
-    value += sign*400*board.searchForLooseEnds(3, 1, currentPlayer);
-    value -= sign*400*board.searchForLooseEnds(3, 1, alternatePlayer);
-
-    value += sign*300*board.searchForLooseEnds(2, 2, currentPlayer);
-    value -= sign*300*board.searchForLooseEnds(2, 2, alternatePlayer);
-
-    value += sign*30*board.searchForLooseEnds(2, 1, currentPlayer);
-    value -= sign*30*board.searchForLooseEnds(2, 1, alternatePlayer);
+//    value += 100000*board.searchForLooseEnds(4, 2, AI);
+//    value += 300*board.searchForLooseEnds(4, 1, AI);
+//    value += 500*board.searchForLooseEnds(3, 2, AI);
+//    value += 50*board.searchForLooseEnds(3, 1, AI);
+//    value += 10*board.searchForLooseEnds(2, 2, AI);
+//    value += 5*board.searchForLooseEnds(2, 1, AI);
+//
+//
+//    value -= 100100*board.searchForLooseEnds(4, 2, HUMAN);
+//    value -= 350*board.searchForLooseEnds(4, 1, HUMAN);
+//    value -= 510*board.searchForLooseEnds(3, 2, HUMAN);
+//    value -= 53*board.searchForLooseEnds(3, 1, HUMAN);
+//    value -= 15*board.searchForLooseEnds(2, 2, HUMAN);
+//    value -= 6*board.searchForLooseEnds(2, 1, HUMAN);
+//
 
 
-    return value;
+    if (board.searchForLooseEnds(4, 1, currentPlayer) > 0) {
+      return sign*100000000.0;
+    }
+    if (board.searchForLooseEnds(4, 1, alternatePlayer) > 0) {
+
+      return -sign*50.0;
+    }
+
+    if (board.searchForLooseEnds(4, 21, currentPlayer) > 0) {
+      return sign*100000000.0;
+    }
+    if (board.searchForLooseEnds(4, 2, alternatePlayer) > 0) {
+
+      return -sign*500000.0;
+    }
+
+
+    if (board.searchForLooseEnds(3, 1, currentPlayer) > 0) {
+      return sign*7.0;
+    }
+    if (board.searchForLooseEnds(3, 1, alternatePlayer) > 0) {
+
+      return -sign*5.0;
+    }
+
+    if (board.searchForLooseEnds(3, 2, currentPlayer) > 0) {
+      return sign*10000.0;
+    }
+    if (board.searchForLooseEnds(3, 2, alternatePlayer) > 0) {
+
+      return -sign*50.0;
+    }
+
+
+    if (board.searchForLooseEnds(2, 1, currentPlayer) > 0) {
+      return sign*2.0;
+    }
+    if (board.searchForLooseEnds(2, 1, alternatePlayer) > 0) {
+
+      return -sign*2.0;
+    }
+
+    if (board.searchForLooseEnds(2, 2, currentPlayer) > 0) {
+      return sign*5.0;
+    }
+    if (board.searchForLooseEnds(2, 2, alternatePlayer) > 0) {
+
+      return -sign*5.0;
+    }
+
+    if (board.searchForLooseEnds(1, 2, currentPlayer) > 0) {
+      return sign*1.0;
+    }
+    if (board.searchForLooseEnds(1, 2, alternatePlayer) > 0) {
+
+      return -sign*1.0;
+    }
+
+    if (board.searchForLooseEnds(1, 1, currentPlayer) > 0) {
+      return sign*.5;
+    }
+    if (board.searchForLooseEnds(1, 1, alternatePlayer) > 0) {
+
+      return -sign*.5;
+    }
+
+
+
+
+    return 200000000;
   }
 }
