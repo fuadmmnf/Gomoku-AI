@@ -257,7 +257,6 @@ class _GamePageState extends State<GamePage> with TickerProviderStateMixin {
   }
 
   placeMove(int i, int j) async {
-    print(i.toString()+"_"+j.toString());
     if (!_singleton.getBoard().isGameOver) {
       if (_singleton.getBoard().getPlayer(i, j) == -1) {
         _singleton.getBoard().changeEntry(i, j, selectedPlayer);

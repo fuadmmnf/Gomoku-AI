@@ -127,9 +127,9 @@ class BoardClass {
   int searchForLooseEnds(int n, int looseEndCount, int currentPlayer) {
     return (
         searchColumnForLooseEnd(n, looseEndCount, currentPlayer) +
-        searchRowForLooseEnd(n, looseEndCount, currentPlayer) +
-        searchLeftDiagonalForLooseEnd(n, looseEndCount, currentPlayer) +
-        searchRightDiagonalForLooseEnd(n, looseEndCount, currentPlayer));
+            searchRowForLooseEnd(n, looseEndCount, currentPlayer) +
+            searchLeftDiagonalForLooseEnd(n, looseEndCount, currentPlayer) +
+            searchRightDiagonalForLooseEnd(n, looseEndCount, currentPlayer));
   }
 
   bool isBoardFinished() {
